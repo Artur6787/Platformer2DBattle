@@ -1,8 +1,8 @@
 using UnityEngine;
 
-public class Attack : MonoBehaviour
+public class AttackController : MonoBehaviour
 {
-    [SerializeField] private GameObject _childObject;
+    [SerializeField] private GameObject _attackHitbox;
     [SerializeField] private Vector2 _initialLocalPosition;
 
     public float startTime;
@@ -18,24 +18,24 @@ public class Attack : MonoBehaviour
     private InputHandler _inputHandler;
     private bool _hasHit = false;
 
-    void Start()
+    private void Start()
     {
         _spriteRenderer = GetComponent<SpriteRenderer>();
         _animationHandler = GetComponent<AnimationHandler>();
         _inputHandler = GetComponent<InputHandler>();
-        _initialLocalPosition = _childObject.transform.localPosition;
+        _initialLocalPosition = _attackHitbox.transform.localPosition;
         _inputHandler.OnActionCommand += HandleHitInput;
     }
 
-    void LateUpdate()
+    private void LateUpdate()
     {
         if (_spriteRenderer.flipX)
         {
-            _childObject.transform.localPosition = new Vector3(-_initialLocalPosition.x, _initialLocalPosition.y/*, _initialLocalPosition.z*/);
+            _attackHitbox.transform.localPosition = new Vector3(-_initialLocalPosition.x, _initialLocalPosition.y);
         }
         else
         {
-            _childObject.transform.localPosition = _initialLocalPosition;
+            _attackHitbox.transform.localPosition = _initialLocalPosition;
         }
     }
 
@@ -61,6 +61,32 @@ public class Attack : MonoBehaviour
         _inputHandler.OnActionCommand -= HandleHitInput;
     }
 
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(hitPosition.position, hitRange);
+    }
+
+    public void PerformHit()
+    {
+        if (_hasHit == false)
+        {
+            Collider2D[] enemies = Physics2D.OverlapCircleAll(hitPosition.position, hitRange, enemy);
+
+            for (int i = 0; i < enemies.Length; i++)
+            {
+                Attacker attackerComponent = enemies[i].GetComponent<Attacker>();
+
+                if (attackerComponent != null)
+                {
+                    attackerComponent.TakeDamage(damageAmount);
+                }
+            }
+
+            _hasHit = true;
+        }
+    }
+
     private void HandleHitInput()
     {
         if (_cooldownTime <= 0 && _isHitting == false)
@@ -72,31 +98,5 @@ public class Attack : MonoBehaviour
             _hasHit = true;
             _cooldownTime = startTime;
         }
-    }
-
-    public void PerformHit()
-    {
-        if (_hasHit == false)
-        {
-            Collider2D[] enemies = Physics2D.OverlapCircleAll(hitPosition.position, hitRange, enemy);
-
-            for (int i = 0; i < enemies.Length; i++)
-            {
-                Enemy enemyComponent = enemies[i].GetComponent<Enemy>();
-
-                if (enemyComponent != null)
-                {
-                    enemyComponent.TakeDamage(damageAmount);
-                }
-            }
-
-            _hasHit = true;
-        }
-    }
-
-    private void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(hitPosition.position, hitRange);
     }
 }

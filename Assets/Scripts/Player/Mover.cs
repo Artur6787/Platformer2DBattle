@@ -138,7 +138,7 @@ public class Mover : MonoBehaviour
     private void CheckGroundStatus()
     {
         LayerMask groundLayer = LayerMask.GetMask("Ground");
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 1f, groundLayer);
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 2f, groundLayer);
 
         if (hit.collider != null)
         {

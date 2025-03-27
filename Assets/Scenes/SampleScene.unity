@@ -1363,7 +1363,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _maxPoints: 100
-  _damageFromPlayer: 10
 --- !u!1 &941266716 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4062297018258963876, guid: c11b07589eedf7648a56ea35f98587c0, type: 3}
@@ -1421,7 +1420,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 983df8e37d489f047bed21b2edeec703, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _childObject: {fileID: 32294030}
+  _attackHitbox: {fileID: 32294030}
   _initialLocalPosition: {x: 0, y: 0}
   startTime: 0.1
   hitPosition: {fileID: 32294031}
@@ -2356,7 +2355,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _maxPoints: 100
-  _damageFromPlayer: 10
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

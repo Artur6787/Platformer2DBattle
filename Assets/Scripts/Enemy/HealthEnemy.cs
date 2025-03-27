@@ -4,7 +4,6 @@ using UnityEngine;
 public class HealthEnemy : MonoBehaviour
 {
     [SerializeField] private int _maxPoints = 100;
-    [SerializeField] private int _damageFromPlayer = 10;
 
     public event Action<float> PointsChanged;
 
@@ -35,7 +34,7 @@ public class HealthEnemy : MonoBehaviour
     private void Die()
     {
         PointsChanged?.Invoke(0);
-        GetComponent<Collider2D>().enabled = false; // Отключаем коллайдер
-        Destroy(gameObject, 0.1f); // Небольшая задержка для завершения анимации
+        GetComponent<Collider2D>().enabled = false;
+        Destroy(gameObject, 0.1f);
     }
 }

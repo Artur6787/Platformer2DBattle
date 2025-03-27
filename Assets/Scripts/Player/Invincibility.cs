@@ -9,11 +9,13 @@ public class Invincibility : MonoBehaviour
     private bool isProtected = false;
     private Renderer objectRenderer;
     private Collider2D objectCollider;
+    private WaitForSeconds blinkWait;
 
     private void Start()
     {
         objectRenderer = GetComponent<Renderer>();
         objectCollider = GetComponent<Collider2D>();
+        blinkWait = new WaitForSeconds(blinkSpeed);
     }
 
     public void MakeProtected()
@@ -32,10 +34,10 @@ public class Invincibility : MonoBehaviour
         {
             objectRenderer.enabled = false;
             objectCollider.enabled = false;
-            yield return new WaitForSeconds(blinkSpeed);
+            yield return blinkWait;
             objectRenderer.enabled = true;
             objectCollider.enabled = true;
-            yield return new WaitForSeconds(blinkSpeed);
+            yield return blinkWait;
         }
     }
 
