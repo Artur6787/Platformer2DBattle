@@ -24,6 +24,7 @@ public class Invincibility : MonoBehaviour
         {
             isProtected = true;
             StartCoroutine(Blinking());
+            Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Enemy"), true);
             Invoke(nameof(DisableProtection), protectionDuration);
         }
     }
@@ -33,10 +34,8 @@ public class Invincibility : MonoBehaviour
         while (isProtected)
         {
             objectRenderer.enabled = false;
-            objectCollider.enabled = false;
             yield return blinkWait;
             objectRenderer.enabled = true;
-            objectCollider.enabled = true;
             yield return blinkWait;
         }
     }
@@ -45,7 +44,7 @@ public class Invincibility : MonoBehaviour
     {
         isProtected = false;
         objectRenderer.enabled = true;
-        objectCollider.enabled = true;
+        Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Enemy"), false);
     }
 
     public bool IsProtected()

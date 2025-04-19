@@ -4,11 +4,11 @@ public class Attacker : MonoBehaviour
 {
     public void TakeDamage(int damage)
     {
-        HealthEnemy healthEnemy = GetComponent<HealthEnemy>();
+        Health health = GetComponent<Health>();
 
-        if (healthEnemy != null)
+        if (health != null)
         {
-            healthEnemy.ChangePoints(-damage);
+            health.ChangePoints(-damage);
         }
     }
 }

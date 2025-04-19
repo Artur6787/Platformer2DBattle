@@ -16,15 +16,28 @@ public class AttackController : MonoBehaviour
     private SpriteRenderer _spriteRenderer;
     private AnimationHandler _animationHandler;
     private InputHandler _inputHandler;
-    private bool _hasHit = false;
+    private bool _hasHit;
+
+    private void Awake()
+    {
+        _inputHandler = GetComponent<InputHandler>();
+    }
 
     private void Start()
     {
         _spriteRenderer = GetComponent<SpriteRenderer>();
         _animationHandler = GetComponent<AnimationHandler>();
-        _inputHandler = GetComponent<InputHandler>();
         _initialLocalPosition = _attackHitbox.transform.localPosition;
+    }
+
+    private void OnEnable()
+    {
         _inputHandler.OnActionCommand += HandleHitInput;
+    }
+
+    private void OnDisable()
+    {
+        _inputHandler.OnActionCommand -= HandleHitInput;
     }
 
     private void LateUpdate()
@@ -41,24 +54,14 @@ public class AttackController : MonoBehaviour
 
     private void Update()
     {
-        if (_cooldownTime <= 0)
-        {
-            if (_isHitting)
-            {
-                _isHitting = false;
-                _animationHandler.SetAttackState(false);
-                _hasHit = false;
-            }
-        }
-        else
+        if (_cooldownTime > 0)
         {
             _cooldownTime -= Time.deltaTime;
         }
-    }
-
-    private void OnDestroy()
-    {
-        _inputHandler.OnActionCommand -= HandleHitInput;
+        else if (_isHitting)
+        {
+            ResetAttack();
+        }
     }
 
     private void OnDrawGizmosSelected()
@@ -67,15 +70,28 @@ public class AttackController : MonoBehaviour
         Gizmos.DrawWireSphere(hitPosition.position, hitRange);
     }
 
-    public void PerformHit()
+    public void OnAttackAnimationHit()
     {
-        if (_hasHit == false)
+        if (_isHitting && !_hasHit)
+        {
+            PerformHit();
+        }
+    }
+
+    public void OnAttackAnimationEnd()
+    {
+        ResetAttack();
+    }
+
+    private void PerformHit()
+    {
+        if (_isHitting && _hasHit == false)
         {
             Collider2D[] enemies = Physics2D.OverlapCircleAll(hitPosition.position, hitRange, enemy);
 
-            for (int i = 0; i < enemies.Length; i++)
+            foreach (var enemyCollider in enemies)
             {
-                Attacker attackerComponent = enemies[i].GetComponent<Attacker>();
+                Attacker attackerComponent = enemyCollider.GetComponent<Attacker>();
 
                 if (attackerComponent != null)
                 {
@@ -87,16 +103,26 @@ public class AttackController : MonoBehaviour
         }
     }
 
+    private void StartAttack()
+    {
+        _isHitting = true;
+        _animationHandler.SetAttackState(true);
+        _cooldownTime = startTime;
+        _hasHit = false;
+    }
+
     private void HandleHitInput()
     {
-        if (_cooldownTime <= 0 && _isHitting == false)
+        if (_cooldownTime <= 0 && !_isHitting)
         {
-            _isHitting = true;
-            _animationHandler.SetAttackState(true);
-            _hasHit = false;
-            PerformHit();
-            _hasHit = true;
-            _cooldownTime = startTime;
+            StartAttack();
         }
+    }
+
+    private void ResetAttack()
+    {
+        _isHitting = false;
+        _animationHandler.SetAttackState(false);
+        _hasHit = false;
     }
 }

@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class HealthPickup : MonoBehaviour
@@ -8,11 +6,17 @@ public class HealthPickup : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        HealthPlayer playerHealth = collision.GetComponent<HealthPlayer>();
-        if (playerHealth != null)
+        Player playerComponent = collision.GetComponent<Player>();
+
+        if (playerComponent != null)
         {
-            playerHealth.ChangePoints(_healAmount);
-            Destroy(gameObject);
+            Health playerHealth = collision.GetComponent<Health>();
+
+            if (playerHealth != null)
+            {
+                playerHealth.ChangePoints(_healAmount);
+                Destroy(gameObject);
+            }
         }
     }
 }

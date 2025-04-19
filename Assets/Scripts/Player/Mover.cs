@@ -6,6 +6,7 @@ public class Mover : MonoBehaviour
 {
     [SerializeField] private float _speed;
     [SerializeField] private float _jumpForce;
+    [SerializeField] private DirectionHandler _directionHandler;
 
     public event Action<bool> OnGroundedStateChanged;
     public event Action OnAttackStarted;
@@ -15,25 +16,28 @@ public class Mover : MonoBehaviour
     private bool _isGrounded;
     private Rigidbody2D _rigidbody2d;
     private AnimationHandler _animationHandler;
-    private SpriteRenderer _sprite;
-    private int _facingDirection;
     private InputHandler _inputHandler;
     private Vector2 _currentInputVector;
     private bool _jumpRequested;
-    private bool _isAttacking;
+    private bool _isAttacking;  
 
     private void Awake()
     {
         _rigidbody2d = GetComponent<Rigidbody2D>();
         _animationHandler = GetComponent<AnimationHandler>();
-        _sprite = GetComponent<SpriteRenderer>();
         _inputHandler = GetComponent<InputHandler>();
+        _directionHandler = GetComponent<DirectionHandler>();
     }
 
     private void Update()
     {
-        Reflect();
         UpdateAnimation();
+
+        if (_directionHandler != null && _currentInputVector.x != 0)
+        {
+            Vector3 direction = new Vector3(_currentInputVector.x, 0, 0); // Convert input to 3D vector
+            _directionHandler.Reflect(direction);
+        }
     }
 
     private void FixedUpdate()
@@ -50,8 +54,10 @@ public class Mover : MonoBehaviour
         _inputHandler.OnActionCommand += HandleActionRequest;
     }
 
-    private void OnDestroy()
+    private void OnDisable()
     {
+        _inputHandler.OnMoveCommand -= HandleMovementInput;
+        _inputHandler.OnJumpCommand -= HandleJumpInput;
         _inputHandler.OnActionCommand -= HandleActionRequest;
     }
 
@@ -90,20 +96,6 @@ public class Mover : MonoBehaviour
         _rigidbody2d.velocity = new Vector2(_currentInputVector.x * _speed, _rigidbody2d.velocity.y);
     }
 
-    private void Reflect()
-    {
-        if (_currentInputVector.x > 0)
-        {
-            _sprite.flipX = false;
-            _facingDirection = 1;
-        }
-        else if (_currentInputVector.x < 0)
-        {
-            _sprite.flipX = true;
-            _facingDirection = -1;
-        }
-    }
-
     private void Jump()
     {
         if (_jumpRequested)
@@ -120,13 +112,13 @@ public class Mover : MonoBehaviour
         bool isRunning = _currentInputVector.x != 0 && _isGrounded;
         _animationHandler.UpdateJumpState(isJumping);
 
-        if (isJumping == false)
+        if (!isJumping)
             _animationHandler.UpdateRunState(isRunning);
         else
             _animationHandler.UpdateRunState(false);
     }
 
-    public void SetGroundedState(bool state)
+    private void SetGroundedState(bool state)
     {
         if (_isGrounded != state)
         {

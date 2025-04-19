@@ -7,11 +7,11 @@ public class Patroller : MonoBehaviour
 
     private Transform[] _points;
     private int _currentPointIndex;
-    private Enemy _enemy;
+    private DirectionHandler _directionHandler;
 
     private void Start()
     {
-        _enemy = GetComponent<Enemy>();
+        _directionHandler = GetComponent<DirectionHandler>();
         _points = new Transform[_path.childCount];
 
         for (int i = 0; i < _path.childCount; i++)
@@ -35,6 +35,6 @@ public class Patroller : MonoBehaviour
             }
         }
 
-        _enemy.Reflect((target.position - transform.position).normalized);
+        _directionHandler.Reflect((target.position - transform.position).normalized);
     }
 }
