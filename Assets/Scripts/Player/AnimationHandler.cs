@@ -1,10 +1,11 @@
 using UnityEngine;
 
+[RequireComponent(typeof(InputHandler))]
 public class AnimationHandler : MonoBehaviour
 {
-    private static readonly int IsJumpingHash = Animator.StringToHash("isJumping");
-    private static readonly int IsRunningHash = Animator.StringToHash("isRunning");
-    private static readonly int IsAttackingHash = Animator.StringToHash("isAttacking");
+    private static readonly int s_isJumpingHash = Animator.StringToHash("isJumping");
+    private static readonly int s_isRunningHash = Animator.StringToHash("isRunning");
+    private static readonly int s_isAttackingHash = Animator.StringToHash("isAttacking");
     private Animator _animator;
 
     private void Awake()
@@ -14,16 +15,16 @@ public class AnimationHandler : MonoBehaviour
 
     public void UpdateJumpState(bool isJumping)
     {
-        _animator.SetBool(IsJumpingHash, isJumping);
+        _animator.SetBool(s_isJumpingHash, isJumping);
     }
 
     public void UpdateRunState(bool isRunning)
     {
-        _animator.SetBool(IsRunningHash, isRunning);
+        _animator.SetBool(s_isRunningHash, isRunning);
     }
 
     public void SetAttackState(bool isAttacking)
     {
-        _animator.SetBool(IsAttackingHash, isAttacking);
+        _animator.SetBool(s_isAttackingHash, isAttacking);
     }
 }

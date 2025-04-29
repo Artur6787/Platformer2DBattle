@@ -1,5 +1,6 @@
 using UnityEngine;
 
+[RequireComponent(typeof(DirectionHandler))]
 public class Patroller : MonoBehaviour
 {
     [SerializeField] private Transform _path;

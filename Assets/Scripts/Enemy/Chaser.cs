@@ -1,5 +1,6 @@
 using UnityEngine;
 
+[RequireComponent(typeof(DirectionHandler))]
 public class Chaser : MonoBehaviour
 {
     [SerializeField] private float _chaseDistance = 5f;

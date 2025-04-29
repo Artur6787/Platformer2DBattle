@@ -1,6 +1,8 @@
 using System.Collections;
 using UnityEngine;
 
+[RequireComponent(typeof(Renderer))]
+[RequireComponent(typeof(Collider2D))]
 public class Invincibility : MonoBehaviour
 {
     [SerializeField] private float protectionDuration = 2f;
@@ -29,6 +31,11 @@ public class Invincibility : MonoBehaviour
         }
     }
 
+    public bool IsProtected()
+    {
+        return isProtected;
+    }
+
     private IEnumerator Blinking()
     {
         while (isProtected)
@@ -45,10 +52,5 @@ public class Invincibility : MonoBehaviour
         isProtected = false;
         objectRenderer.enabled = true;
         Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Enemy"), false);
-    }
-
-    public bool IsProtected()
-    {
-        return isProtected;
     }
 }

@@ -1,5 +1,6 @@
 using UnityEngine;
 
+[RequireComponent(typeof(Health))]
 public class Attacker : MonoBehaviour
 {
     public void TakeDamage(int damage)

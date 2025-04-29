@@ -1,5 +1,7 @@
 using UnityEngine;
 
+[RequireComponent(typeof(Chaser))]
+[RequireComponent(typeof(Patroller))]
 public class Enemy : MonoBehaviour
 {
     private Chaser _chaser;

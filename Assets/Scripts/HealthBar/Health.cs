@@ -1,42 +1,32 @@
 using System;
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody2D))]
+[RequireComponent(typeof(Collider2D))]
 public class Health : MonoBehaviour
 {
     [SerializeField] private int _maxPoints = 100;
 
-    public event Action<float> PointsChanged;
+    private int _currentPoints;
 
-    private int currentPoints;
-    private Rigidbody2D _rigidbody;
-    private new Collider2D collider;
+    public event Action<float> PointsChanged;
+    public event Action Died;
 
     private void Start()
     {
-        currentPoints = _maxPoints;
-        _rigidbody = GetComponent<Rigidbody2D>();
-        collider = GetComponent<Collider2D>();
+        _currentPoints = _maxPoints;
     }
 
     public void ChangePoints(int value)
     {
-        currentPoints = Mathf.Clamp(currentPoints + value, 0, _maxPoints);
-        float currentHealthAsPercentage = (float)currentPoints / _maxPoints;
+        _currentPoints = Mathf.Clamp(_currentPoints + value, 0, _maxPoints);
+        float currentHealthAsPercentage = (float)_currentPoints / _maxPoints;
 
-        if (currentPoints <= 0)
-        {
-            Die();
-        }
-        else
-        {
-            PointsChanged?.Invoke(currentHealthAsPercentage);
-        }
-    }
+        PointsChanged?.Invoke(currentHealthAsPercentage);
 
-    private void Die()
-    {
-        PointsChanged?.Invoke(0);
-        collider.enabled = false;
-        Destroy(gameObject, 0.1f);
+        if (_currentPoints <= 0)
+        {
+            Died?.Invoke();
+        }
     }
 }

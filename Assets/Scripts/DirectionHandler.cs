@@ -1,5 +1,6 @@
 using UnityEngine;
 
+[RequireComponent(typeof(SpriteRenderer))]
 public class DirectionHandler : MonoBehaviour
 {
     [SerializeField] private Transform _healthBarPivot;
@@ -18,16 +19,12 @@ public class DirectionHandler : MonoBehaviour
         if (direction.x > 0)
         {
             _spriteRenderer.flipX = false;
-
-            if (_healthBarPivot != null)
-                _healthBarPivot.transform.rotation = Quaternion.Euler(0, 0, 0);
+            _healthBarPivot.transform.rotation = Quaternion.Euler(0, 0, 0);
         }
         else
         {
             _spriteRenderer.flipX = false;
-
-            if (_healthBarPivot != null)
-                _healthBarPivot.transform.rotation = Quaternion.Euler(-1, 0, 0);
+            _healthBarPivot.transform.rotation = Quaternion.Euler(-1, 0, 0);
         }
     }
 }

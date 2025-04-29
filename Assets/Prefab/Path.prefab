@@ -381,6 +381,7 @@ GameObject:
   - component: {fileID: 7841169262634217959}
   - component: {fileID: 8901144770390189121}
   - component: {fileID: 4807314799847574511}
+  - component: {fileID: 129259104651971235}
   m_Layer: 7
   m_Name: Enemy
   m_TagString: Cube
@@ -632,6 +633,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _healthBarPivot: {fileID: 8225925650287922578}
   _spriteRenderer: {fileID: 4090062435682646063}
+--- !u!114 &129259104651971235
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6802388076964510617}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7a4e2f06a9fa01409977cfbd3717954, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &9107164623218442084
 GameObject:
   m_ObjectHideFlags: 0

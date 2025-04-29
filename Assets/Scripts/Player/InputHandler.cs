@@ -3,16 +3,16 @@ using UnityEngine;
 
 public class InputHandler : MonoBehaviour
 {
-    public event Action<Vector2> OnMoveCommand;
-    public event Action OnJumpCommand;
-    public event Action OnActionCommand;
-
     public KeyCode moveLeftKey = KeyCode.A;
     public KeyCode moveRightKey = KeyCode.D;
     public KeyCode jumpKey = KeyCode.Space;
     public KeyCode attackKey = KeyCode.F;
 
     private Vector2 _moveCommand;
+
+    public event Action<Vector2> OnMoveCommand;
+    public event Action OnJumpCommand;
+    public event Action OnActionCommand;
 
     private void Update()
     {

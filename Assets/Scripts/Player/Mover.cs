@@ -1,25 +1,29 @@
 using System;
 using UnityEngine;
 
-[RequireComponent(typeof(SpriteRenderer))]
+[RequireComponent(typeof(Rigidbody2D))]
+[RequireComponent(typeof(AnimationHandler))]
+[RequireComponent(typeof(InputHandler))]
+[RequireComponent(typeof(DirectionHandler))]
 public class Mover : MonoBehaviour
 {
     [SerializeField] private float _speed;
     [SerializeField] private float _jumpForce;
     [SerializeField] private DirectionHandler _directionHandler;
 
-    public event Action<bool> OnGroundedStateChanged;
-    public event Action OnAttackStarted;
-    public event Action OnAttackEnded;
-
-    public bool IsGrounded => _isGrounded;
-    private bool _isGrounded;
     private Rigidbody2D _rigidbody2d;
     private AnimationHandler _animationHandler;
     private InputHandler _inputHandler;
     private Vector2 _currentInputVector;
+    private GroundDetector _groundDetector;
     private bool _jumpRequested;
-    private bool _isAttacking;  
+    private bool _isAttacking;
+
+    public event Action<bool> OnGroundedStateChanged;
+    public event Action AttackStarted;
+    public event Action AttackEnded;
+
+    public bool IsGrounded { get; private set; }
 
     private void Awake()
     {
@@ -27,6 +31,7 @@ public class Mover : MonoBehaviour
         _animationHandler = GetComponent<AnimationHandler>();
         _inputHandler = GetComponent<InputHandler>();
         _directionHandler = GetComponent<DirectionHandler>();
+        _groundDetector = GetComponent<GroundDetector>();
     }
 
     private void Update()
@@ -35,7 +40,7 @@ public class Mover : MonoBehaviour
 
         if (_directionHandler != null && _currentInputVector.x != 0)
         {
-            Vector3 direction = new Vector3(_currentInputVector.x, 0, 0); // Convert input to 3D vector
+            Vector3 direction = new Vector3(_currentInputVector.x, 0, 0);
             _directionHandler.Reflect(direction);
         }
     }
@@ -44,7 +49,6 @@ public class Mover : MonoBehaviour
     {
         ProcessMovement();
         Jump();
-        CheckGroundStatus();
     }
 
     private void OnEnable()
@@ -52,6 +56,7 @@ public class Mover : MonoBehaviour
         _inputHandler.OnMoveCommand += HandleMovementInput;
         _inputHandler.OnJumpCommand += HandleJumpInput;
         _inputHandler.OnActionCommand += HandleActionRequest;
+        _groundDetector.OnGroundedChanged += SetGroundedState;
     }
 
     private void OnDisable()
@@ -59,6 +64,7 @@ public class Mover : MonoBehaviour
         _inputHandler.OnMoveCommand -= HandleMovementInput;
         _inputHandler.OnJumpCommand -= HandleJumpInput;
         _inputHandler.OnActionCommand -= HandleActionRequest;
+        _groundDetector.OnGroundedChanged -= SetGroundedState;
     }
 
     private void HandleActionRequest()
@@ -67,7 +73,7 @@ public class Mover : MonoBehaviour
         {
             _isAttacking = true;
             _animationHandler.SetAttackState(true);
-            OnAttackStarted?.Invoke();
+            AttackStarted?.Invoke();
         }
     }
 
@@ -75,7 +81,7 @@ public class Mover : MonoBehaviour
     {
         _isAttacking = false;
         _animationHandler.SetAttackState(false);
-        OnAttackEnded?.Invoke();
+        AttackEnded?.Invoke();
     }
 
     private void HandleMovementInput(Vector2 moveInput)
@@ -85,7 +91,7 @@ public class Mover : MonoBehaviour
 
     private void HandleJumpInput()
     {
-        if (_isGrounded)
+        if (IsGrounded)
         {
             _jumpRequested = true;
         }
@@ -108,37 +114,18 @@ public class Mover : MonoBehaviour
 
     private void UpdateAnimation()
     {
-        bool isJumping = !_isGrounded;
-        bool isRunning = _currentInputVector.x != 0 && _isGrounded;
+        bool isJumping = !IsGrounded;
+        bool isRunning = _currentInputVector.x != 0 && IsGrounded;
         _animationHandler.UpdateJumpState(isJumping);
-
-        if (!isJumping)
-            _animationHandler.UpdateRunState(isRunning);
-        else
-            _animationHandler.UpdateRunState(false);
+        _animationHandler.UpdateRunState(isRunning);
     }
 
-    private void SetGroundedState(bool state)
+    private void SetGroundedState(bool grounded)
     {
-        if (_isGrounded != state)
+        if (IsGrounded != grounded)
         {
-            _isGrounded = state;
-            OnGroundedStateChanged?.Invoke(_isGrounded);
-        }
-    }
-
-    private void CheckGroundStatus()
-    {
-        LayerMask groundLayer = LayerMask.GetMask("Ground");
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 2f, groundLayer);
-
-        if (hit.collider != null)
-        {
-            SetGroundedState(true);
-        }
-        else
-        {
-            SetGroundedState(false);
+            IsGrounded = grounded;
+            OnGroundedStateChanged?.Invoke(IsGrounded);
         }
     }
 }

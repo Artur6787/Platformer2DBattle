@@ -1,5 +1,8 @@
 using UnityEngine;
 
+[RequireComponent(typeof(SpriteRenderer))]
+[RequireComponent(typeof(AnimationHandler))]
+[RequireComponent(typeof(InputHandler))]
 public class AttackController : MonoBehaviour
 {
     [SerializeField] private GameObject _attackHitbox;
@@ -72,7 +75,7 @@ public class AttackController : MonoBehaviour
 
     public void OnAttackAnimationHit()
     {
-        if (_isHitting && !_hasHit)
+        if (_isHitting && _hasHit == false)
         {
             PerformHit();
         }
@@ -113,7 +116,7 @@ public class AttackController : MonoBehaviour
 
     private void HandleHitInput()
     {
-        if (_cooldownTime <= 0 && !_isHitting)
+        if (_cooldownTime <= 0 && _isHitting == false)
         {
             StartAttack();
         }
