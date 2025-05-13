@@ -84,8 +84,8 @@ GameObject:
   - component: {fileID: 5285960979850349017}
   - component: {fileID: 6557557312938652192}
   - component: {fileID: 7114547045155581912}
-  - component: {fileID: 532092053173306393}
   - component: {fileID: 298474125443086481}
+  - component: {fileID: 7762619773048695050}
   m_Layer: 3
   m_Name: Player
   m_TagString: Player
@@ -284,10 +284,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f26da5654d627f45a04292695cbe2a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveLeftKey: 97
-  moveRightKey: 100
-  jumpKey: 32
-  attackKey: 102
+  _jumpKey: 32
+  _attackKey: 102
 --- !u!114 &8081731310694632478
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -324,8 +322,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69057926870cec047981f471011881fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  protectionDuration: 2
-  blinkSpeed: 0.2
+  _protectionDuration: 2
+  _blinkSpeed: 0.1
 --- !u!114 &6557557312938652192
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -340,13 +338,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _attackHitbox: {fileID: 2895494212506292597}
   _initialLocalPosition: {x: 0, y: 0}
-  startTime: 0.1
-  hitPosition: {fileID: 1622811645076290150}
-  enemy:
+  _startTime: 1
+  _hitPosition: {fileID: 1622811645076290150}
+  _enemy:
     serializedVersion: 2
     m_Bits: 128
-  hitRange: 2
-  damageAmount: 10
+  _hitRange: 2
+  _damageAmount: 10
 --- !u!114 &7114547045155581912
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -360,18 +358,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _maxPoints: 100
---- !u!114 &532092053173306393
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4062297018258963876}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 28639a0ea6af2484c8f7308d6a93200d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &298474125443086481
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -386,6 +372,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _healthBarPivot: {fileID: 1196622499814324525}
   _spriteRenderer: {fileID: 315265302745159722}
+--- !u!114 &7762619773048695050
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4062297018258963876}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f3e0a038ff83ea4288d3895a470f7b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _collisionDamage: 10
 --- !u!1 &6035143222992392839
 GameObject:
   m_ObjectHideFlags: 0

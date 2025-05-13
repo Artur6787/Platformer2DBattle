@@ -8,7 +8,7 @@ public class DirectionHandler : MonoBehaviour
 
     private void Start()
     {
-            _spriteRenderer = GetComponent<SpriteRenderer>();
+        _spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     public void Reflect(Vector3 direction)

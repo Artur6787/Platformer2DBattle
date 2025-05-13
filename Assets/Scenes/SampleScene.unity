@@ -122,6 +122,11 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!4 &475722140 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1622811645076290150, guid: c11b07589eedf7648a56ea35f98587c0, type: 3}
+  m_PrefabInstance: {fileID: 778731705}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &499112249
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -782,6 +787,42 @@ PrefabInstance:
     - target: {fileID: 5021244261041292029, guid: c11b07589eedf7648a56ea35f98587c0, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: -1.358
+      objectReference: {fileID: 0}
+    - target: {fileID: 5285960979850349017, guid: c11b07589eedf7648a56ea35f98587c0, type: 3}
+      propertyPath: _blinkSpeed
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6557557312938652192, guid: c11b07589eedf7648a56ea35f98587c0, type: 3}
+      propertyPath: _hitRange
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6557557312938652192, guid: c11b07589eedf7648a56ea35f98587c0, type: 3}
+      propertyPath: _startTime
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6557557312938652192, guid: c11b07589eedf7648a56ea35f98587c0, type: 3}
+      propertyPath: _hitPosition
+      value: 
+      objectReference: {fileID: 475722140}
+    - target: {fileID: 6557557312938652192, guid: c11b07589eedf7648a56ea35f98587c0, type: 3}
+      propertyPath: _damageAmount
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 6557557312938652192, guid: c11b07589eedf7648a56ea35f98587c0, type: 3}
+      propertyPath: _enemy.m_Bits
+      value: 128
+      objectReference: {fileID: 0}
+    - target: {fileID: 6557557312938652192, guid: c11b07589eedf7648a56ea35f98587c0, type: 3}
+      propertyPath: _attackCooldown
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6557557312938652192, guid: c11b07589eedf7648a56ea35f98587c0, type: 3}
+      propertyPath: _initialLocalPosition.x
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6557557312938652192, guid: c11b07589eedf7648a56ea35f98587c0, type: 3}
+      propertyPath: _initialLocalPosition.y
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

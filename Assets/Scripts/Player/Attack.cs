@@ -3,27 +3,28 @@ using UnityEngine;
 [RequireComponent(typeof(SpriteRenderer))]
 [RequireComponent(typeof(AnimationHandler))]
 [RequireComponent(typeof(InputHandler))]
-public class AttackController : MonoBehaviour
+public class Attack : MonoBehaviour
 {
     [SerializeField] private GameObject _attackHitbox;
     [SerializeField] private Vector2 _initialLocalPosition;
+    [SerializeField] private float _startTime = 0.1f;
+    [SerializeField] private Transform _hitPosition;
+    [SerializeField] private LayerMask _enemy;
+    [SerializeField] private float _hitRange;
+    [SerializeField] private int _damageAmount;
 
-    public float startTime;
-    public Transform hitPosition;
-    public LayerMask enemy;
-    public float hitRange;
-    public int damageAmount;
-
-    private float _cooldownTime;
-    private bool _isHitting = false;
+    private bool _isHitting;
     private SpriteRenderer _spriteRenderer;
     private AnimationHandler _animationHandler;
     private InputHandler _inputHandler;
     private bool _hasHit;
+    private Mover _mover;
+    private float _attackTimeRemaining;
 
     private void Awake()
     {
         _inputHandler = GetComponent<InputHandler>();
+        _mover = GetComponent<Mover>();
     }
 
     private void Start()
@@ -35,47 +36,46 @@ public class AttackController : MonoBehaviour
 
     private void OnEnable()
     {
-        _inputHandler.OnActionCommand += HandleHitInput;
+        _inputHandler.ActionCommand += HandleHitInput;
     }
 
     private void OnDisable()
     {
-        _inputHandler.OnActionCommand -= HandleHitInput;
+        _inputHandler.ActionCommand -= HandleHitInput;
     }
 
     private void LateUpdate()
     {
-        if (_spriteRenderer.flipX)
-        {
-            _attackHitbox.transform.localPosition = new Vector3(-_initialLocalPosition.x, _initialLocalPosition.y);
-        }
-        else
-        {
-            _attackHitbox.transform.localPosition = _initialLocalPosition;
-        }
+        _attackHitbox.transform.localPosition = _spriteRenderer.flipX
+            ? new Vector3(-_initialLocalPosition.x, _initialLocalPosition.y)
+            : _initialLocalPosition;
     }
 
     private void Update()
-    {
-        if (_cooldownTime > 0)
+    {       
+        if (_isHitting)
         {
-            _cooldownTime -= Time.deltaTime;
-        }
-        else if (_isHitting)
-        {
-            ResetAttack();
+            _attackTimeRemaining -= Time.deltaTime;
+
+            if (_attackTimeRemaining <= 0)
+            {
+                ResetAttack();
+            }
         }
     }
 
     private void OnDrawGizmosSelected()
     {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(hitPosition.position, hitRange);
+        if (_hitPosition != null)
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(_hitPosition.position, _hitRange);
+        }
     }
 
     public void OnAttackAnimationHit()
     {
-        if (_isHitting && _hasHit == false)
+        if (_isHitting == true && _hasHit == false)
         {
             PerformHit();
         }
@@ -88,17 +88,15 @@ public class AttackController : MonoBehaviour
 
     private void PerformHit()
     {
-        if (_isHitting && _hasHit == false)
+        if (_isHitting == true && _hasHit == false)
         {
-            Collider2D[] enemies = Physics2D.OverlapCircleAll(hitPosition.position, hitRange, enemy);
+            Collider2D[] enemies = Physics2D.OverlapCircleAll(_hitPosition.position, _hitRange, _enemy);
 
             foreach (var enemyCollider in enemies)
             {
-                Attacker attackerComponent = enemyCollider.GetComponent<Attacker>();
-
-                if (attackerComponent != null)
+                if (enemyCollider.TryGetComponent(out Health health))
                 {
-                    attackerComponent.TakeDamage(damageAmount);
+                    health.TakeDamage(_damageAmount);
                 }
             }
 
@@ -110,13 +108,18 @@ public class AttackController : MonoBehaviour
     {
         _isHitting = true;
         _animationHandler.SetAttackState(true);
-        _cooldownTime = startTime;
         _hasHit = false;
+        _attackTimeRemaining = _startTime;
+
+        if (_mover != null)
+        {
+            _mover.SetAttackingState(true);
+        }
     }
 
     private void HandleHitInput()
     {
-        if (_cooldownTime <= 0 && _isHitting == false)
+        if (_isHitting == false)
         {
             StartAttack();
         }
@@ -127,5 +130,10 @@ public class AttackController : MonoBehaviour
         _isHitting = false;
         _animationHandler.SetAttackState(false);
         _hasHit = false;
+
+        if (_mover != null)
+        {
+            _mover.SetAttackingState(false);
+        }
     }
 }

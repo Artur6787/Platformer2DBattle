@@ -19,7 +19,7 @@ public class Mover : MonoBehaviour
     private bool _jumpRequested;
     private bool _isAttacking;
 
-    public event Action<bool> OnGroundedStateChanged;
+    public event Action<bool> GroundedStateChanged;
     public event Action AttackStarted;
     public event Action AttackEnded;
 
@@ -38,7 +38,7 @@ public class Mover : MonoBehaviour
     {
         UpdateAnimation();
 
-        if (_directionHandler != null && _currentInputVector.x != 0)
+        if (_directionHandler != null && _currentInputVector.x != 0 && _isAttacking == false)
         {
             Vector3 direction = new Vector3(_currentInputVector.x, 0, 0);
             _directionHandler.Reflect(direction);
@@ -53,35 +53,46 @@ public class Mover : MonoBehaviour
 
     private void OnEnable()
     {
-        _inputHandler.OnMoveCommand += HandleMovementInput;
-        _inputHandler.OnJumpCommand += HandleJumpInput;
-        _inputHandler.OnActionCommand += HandleActionRequest;
-        _groundDetector.OnGroundedChanged += SetGroundedState;
+        _inputHandler.MoveCommand += HandleMovementInput;
+        _inputHandler.JumpCommand += HandleJumpInput;
+        _inputHandler.ActionCommand += HandleActionRequest;
+        _groundDetector.GroundedChanged += SetGroundedState;
     }
 
     private void OnDisable()
     {
-        _inputHandler.OnMoveCommand -= HandleMovementInput;
-        _inputHandler.OnJumpCommand -= HandleJumpInput;
-        _inputHandler.OnActionCommand -= HandleActionRequest;
-        _groundDetector.OnGroundedChanged -= SetGroundedState;
+        _inputHandler.MoveCommand -= HandleMovementInput;
+        _inputHandler.JumpCommand -= HandleJumpInput;
+        _inputHandler.ActionCommand -= HandleActionRequest;
+        _groundDetector.GroundedChanged -= SetGroundedState;
     }
 
     private void HandleActionRequest()
     {
         if (_isAttacking == false)
         {
-            _isAttacking = true;
-            _animationHandler.SetAttackState(true);
-            AttackStarted?.Invoke();
+            SetAttackingState(true);
         }
     }
 
-    private void ResetAttack()
+    public void SetAttackingState(bool isAttacking)
     {
-        _isAttacking = false;
-        _animationHandler.SetAttackState(false);
-        AttackEnded?.Invoke();
+        _isAttacking = isAttacking;
+        _animationHandler.SetAttackState(_isAttacking);
+        
+        if (isAttacking)
+        {
+            AttackStarted?.Invoke();
+        }
+        else
+        {
+            AttackEnded?.Invoke();
+        }
+    }
+
+    public void ResetAttack()
+    {
+        SetAttackingState(false);
     }
 
     private void HandleMovementInput(Vector2 moveInput)
@@ -91,7 +102,7 @@ public class Mover : MonoBehaviour
 
     private void HandleJumpInput()
     {
-        if (IsGrounded)
+        if (IsGrounded && _isAttacking == false)
         {
             _jumpRequested = true;
         }
@@ -99,12 +110,19 @@ public class Mover : MonoBehaviour
 
     private void ProcessMovement()
     {
-        _rigidbody2d.velocity = new Vector2(_currentInputVector.x * _speed, _rigidbody2d.velocity.y);
+        if (_isAttacking == false)
+        {
+            _rigidbody2d.velocity = new Vector2(_currentInputVector.x * _speed, _rigidbody2d.velocity.y);
+        }
+        else
+        {
+            _rigidbody2d.velocity = new Vector2(0, _rigidbody2d.velocity.y);
+        }
     }
 
     private void Jump()
     {
-        if (_jumpRequested)
+        if (_jumpRequested && _isAttacking == false)
         {
             _rigidbody2d.AddForce(new Vector2(0f, _jumpForce), ForceMode2D.Impulse);
             SetGroundedState(false);
@@ -114,8 +132,8 @@ public class Mover : MonoBehaviour
 
     private void UpdateAnimation()
     {
-        bool isJumping = !IsGrounded;
-        bool isRunning = _currentInputVector.x != 0 && IsGrounded;
+        bool isJumping = IsGrounded == false;
+        bool isRunning = _currentInputVector.x != 0 && IsGrounded && _isAttacking == false;
         _animationHandler.UpdateJumpState(isJumping);
         _animationHandler.UpdateRunState(isRunning);
     }
@@ -125,7 +143,7 @@ public class Mover : MonoBehaviour
         if (IsGrounded != grounded)
         {
             IsGrounded = grounded;
-            OnGroundedStateChanged?.Invoke(IsGrounded);
+            GroundedStateChanged?.Invoke(IsGrounded);
         }
     }
 }

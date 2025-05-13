@@ -7,7 +7,7 @@ public class GroundDetector : MonoBehaviour
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private Vector2 offset = Vector2.zero;
 
-    public event Action<bool> OnGroundedChanged;
+    public event Action<bool> GroundedChanged;
 
     public bool IsGrounded { get; private set; }
 
@@ -19,7 +19,7 @@ public class GroundDetector : MonoBehaviour
 
         if (IsGrounded != wasGrounded)
         {
-            OnGroundedChanged?.Invoke(IsGrounded);
+            GroundedChanged?.Invoke(IsGrounded);
         }
     }
 

@@ -5,28 +5,34 @@ using UnityEngine;
 [RequireComponent(typeof(Collider2D))]
 public class Health : MonoBehaviour
 {
-    [SerializeField] private int _maxPoints = 100;
+    [SerializeField] private int _maxHealth = 100;
 
-    private int _currentPoints;
+    private int _currentHealth;
 
-    public event Action<float> PointsChanged;
+    public event Action<float> HealthChanged;
     public event Action Died;
 
     private void Start()
     {
-        _currentPoints = _maxPoints;
+        _currentHealth = _maxHealth;
     }
 
-    public void ChangePoints(int value)
+    public void TakeDamage(int damage)
     {
-        _currentPoints = Mathf.Clamp(_currentPoints + value, 0, _maxPoints);
-        float currentHealthAsPercentage = (float)_currentPoints / _maxPoints;
+        ModifyHealth(-Mathf.Abs(damage));
+    }
 
-        PointsChanged?.Invoke(currentHealthAsPercentage);
+    public void Heal(int healAmount)
+    {
+        ModifyHealth(Mathf.Abs(healAmount));
+    }
 
-        if (_currentPoints <= 0)
-        {
+    private void ModifyHealth(int value)
+    {
+        _currentHealth = Mathf.Clamp(_currentHealth + value, 0, _maxHealth);
+        HealthChanged?.Invoke((float)_currentHealth / _maxHealth);
+
+        if (_currentHealth <= 0)
             Died?.Invoke();
-        }
     }
 }

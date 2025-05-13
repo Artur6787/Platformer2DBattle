@@ -1,19 +1,19 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class HealthBarForAll : MonoBehaviour
+public class HealthBar : MonoBehaviour
 {
     [SerializeField] private Image _barFilling;
     [SerializeField] private Health _pointsSource;
 
     private void Awake()
     {
-        _pointsSource.PointsChanged += OnPointsUpdated;
+        _pointsSource.HealthChanged += OnPointsUpdated;
     }
 
     private void OnDestroy()
     {
-        _pointsSource.PointsChanged -= OnPointsUpdated;
+        _pointsSource.HealthChanged -= OnPointsUpdated;
     }
 
     private void OnPointsUpdated(float valueAsPecantage)

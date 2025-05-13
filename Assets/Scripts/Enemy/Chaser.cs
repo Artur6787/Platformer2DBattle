@@ -29,16 +29,17 @@ public class Chaser : MonoBehaviour
         }
 
         Vector2 directionToPlayer = new Vector2(_target.position.x - transform.position.x, 0).normalized;
-        float distanceToPlayer = Vector2.Distance(transform.position, _target.position);
+        float sqrDistanceToPlayer = ((Vector2)_target.position - (Vector2)transform.position).sqrMagnitude;
+        float sqrChaseDistance = _chaseDistance * _chaseDistance;
 
-        if (distanceToPlayer <= _chaseDistance)
+        if (sqrDistanceToPlayer <= sqrChaseDistance)
         {
             float dotProduct = Vector2.Dot(transform.right, directionToPlayer);
 
             if (dotProduct > 0)
             {
-                RaycastHit2D hit = Physics2D.Raycast(transform.position, directionToPlayer, distanceToPlayer, _playerLayer);
-                Debug.DrawLine(transform.position, transform.position + (Vector3)directionToPlayer * distanceToPlayer, Color.red);
+                RaycastHit2D hit = Physics2D.Raycast(transform.position, directionToPlayer, Mathf.Sqrt(sqrDistanceToPlayer), _playerLayer);
+                Debug.DrawLine(transform.position, transform.position + (Vector3)directionToPlayer * Mathf.Sqrt(sqrDistanceToPlayer), Color.red);
                 return hit.collider != null && hit.collider.GetComponent<Player>();
             }
         }
