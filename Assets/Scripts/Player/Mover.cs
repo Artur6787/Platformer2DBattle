@@ -131,7 +131,7 @@ public class Mover : MonoBehaviour
 
     private void UpdateAnimation()
     {
-        bool isJumping = IsGrounded == false;
+        bool isJumping = IsGrounded == false && _isAttacking == false;
         bool isRunning = _currentInputVector.x != 0 && IsGrounded && _isAttacking == false;
         _animationHandler.UpdateJumpState(isJumping);
         _animationHandler.UpdateRunState(isRunning);

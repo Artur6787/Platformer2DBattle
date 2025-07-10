@@ -43,7 +43,7 @@ GameObject:
   - component: {fileID: 6614166678429903209}
   - component: {fileID: 6686939817389741274}
   - component: {fileID: 5422957610194902614}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Health
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -67,7 +67,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 1.7750168, y: 0.7937014}
+  m_AnchoredPosition: {x: 0.15, y: 0.7937014}
   m_SizeDelta: {x: 15.5794, y: 6.1162}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &6614166678429903209
@@ -175,7 +175,7 @@ GameObject:
   - component: {fileID: 6930034503984227543}
   - component: {fileID: 6991825709384755407}
   - component: {fileID: 4039749972603863163}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: HealthBarFillinges
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -251,7 +251,7 @@ GameObject:
   - component: {fileID: 3314237321989767423}
   - component: {fileID: 8971654046516240191}
   - component: {fileID: 1416008212944723012}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: HealthBarEnemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -329,7 +329,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _barFilling: {fileID: 4039749972603863163}
-  _pointsSource: {fileID: 0}
+  _pointsSource: {fileID: 292299255758844918}
 --- !u!1 &6802388076964510617
 GameObject:
   m_ObjectHideFlags: 0
@@ -341,7 +341,6 @@ GameObject:
   - component: {fileID: 5684149339399814766}
   - component: {fileID: 4090062435682646063}
   - component: {fileID: 2560339908552813701}
-  - component: {fileID: 8701980935945273257}
   m_Layer: 7
   m_Name: EnemySprite
   m_TagString: Cube
@@ -357,10 +356,10 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6802388076964510617}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.5250168, y: -0.6662991, z: 0.023157857}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.01, y: -0.6662991, z: 0.023157857}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 4221197624114429958}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -437,19 +436,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &8701980935945273257
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6802388076964510617}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 17a4dc93e436a8c488213eff08e0448f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _spriteRenderer: {fileID: 4090062435682646063}
 --- !u!1 &7048232332704601535
 GameObject:
   m_ObjectHideFlags: 0
@@ -466,7 +452,8 @@ GameObject:
   - component: {fileID: 8193144259284185997}
   - component: {fileID: 1873703798044524883}
   - component: {fileID: 9056748332454965810}
-  m_Layer: 0
+  - component: {fileID: 3858080882978750430}
+  m_Layer: 7
   m_Name: EnemyRoot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -481,8 +468,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7048232332704601535}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -6.184028, y: 4.306299, z: -0.07445108}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -4.49, y: 4.23, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -549,7 +536,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0.089378834, y: -0.51189685}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -560,7 +547,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 1.4062672, y: 2.0237937}
   m_EdgeRadius: 0
 --- !u!114 &292299255758844918
 MonoBehaviour:
@@ -606,10 +593,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _points:
-  - {fileID: 728078520704882118}
   - {fileID: 4076944763900878744}
-  _speed: 0
-  _pointReachThreshold: 0.1
+  - {fileID: 728078520704882118}
+  _speed: 2
+  _pointReachThreshold: 2
 --- !u!114 &1873703798044524883
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -635,6 +622,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _collisionDamage: 10
+--- !u!114 &3858080882978750430
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7048232332704601535}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17a4dc93e436a8c488213eff08e0448f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _spriteRenderer: {fileID: 4090062435682646063}
 --- !u!1 &9107164623218442084
 GameObject:
   m_ObjectHideFlags: 0
@@ -660,7 +660,7 @@ Transform:
   m_GameObject: {fileID: 9107164623218442084}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 9.8, y: -6.81, z: 0.051293224}
+  m_LocalPosition: {x: 9.76, y: -6.74, z: 0.051293224}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

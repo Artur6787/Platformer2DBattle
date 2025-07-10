@@ -1,6 +1,5 @@
 using UnityEngine;
 
-[RequireComponent(typeof(SpriteRenderer))]
 public class DirectionHandler : MonoBehaviour
 {
     [SerializeField] private SpriteRenderer _spriteRenderer;
@@ -18,6 +17,7 @@ public class DirectionHandler : MonoBehaviour
             scale.x = Mathf.Abs(scale.x);
         else if (direction.x < 0)
             scale.x = -Mathf.Abs(scale.x);
+
         transform.localScale = scale;
     }
 }

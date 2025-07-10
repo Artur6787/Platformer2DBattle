@@ -10,6 +10,5 @@ public abstract class CollectibleItem : MonoBehaviour
     {
         Collected?.Invoke(this);
         Destroyed?.Invoke(this);
-        //Destroy(gameObject);
     }
 }
