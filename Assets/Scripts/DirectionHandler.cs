@@ -3,7 +3,6 @@ using UnityEngine;
 [RequireComponent(typeof(SpriteRenderer))]
 public class DirectionHandler : MonoBehaviour
 {
-    [SerializeField] private Transform _healthBarPivot;
     [SerializeField] private SpriteRenderer _spriteRenderer;
 
     private void Start()
@@ -13,18 +12,12 @@ public class DirectionHandler : MonoBehaviour
 
     public void Reflect(Vector3 direction)
     {
-        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-        transform.rotation = Quaternion.Euler(new Vector3(0, angle, 0));
+        Vector3 scale = transform.localScale;
 
         if (direction.x > 0)
-        {
-            _spriteRenderer.flipX = false;
-            _healthBarPivot.transform.rotation = Quaternion.Euler(0, 0, 0);
-        }
-        else
-        {
-            _spriteRenderer.flipX = false;
-            _healthBarPivot.transform.rotation = Quaternion.Euler(-1, 0, 0);
-        }
+            scale.x = Mathf.Abs(scale.x);
+        else if (direction.x < 0)
+            scale.x = -Mathf.Abs(scale.x);
+        transform.localScale = scale;
     }
 }

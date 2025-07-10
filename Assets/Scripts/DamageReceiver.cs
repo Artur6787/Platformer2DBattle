@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(Health))]
-public class Damage : MonoBehaviour
+public class DamageReceiver : MonoBehaviour
 {
     [SerializeField] private int _collisionDamage = 10;
 
@@ -14,6 +14,14 @@ public class Damage : MonoBehaviour
         _invincibility = GetComponent<Invincibility>();
     }
 
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (TryGetComponent<Player>(out _) && collision.gameObject.TryGetComponent<Enemy>(out _))
+        {
+            TakeDamage(_collisionDamage);
+        }
+    }
+
     public void TakeDamage(int damage)
     {
         if (_invincibility != null && _invincibility.IsProtected())
@@ -23,13 +31,5 @@ public class Damage : MonoBehaviour
 
         if (_invincibility != null)
             _invincibility.MakeProtected();
-    }
-
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (gameObject.CompareTag("Player") && collision.gameObject.GetComponent<Enemy>() != null)
-        {
-            TakeDamage(_collisionDamage);
-        }
     }
 }

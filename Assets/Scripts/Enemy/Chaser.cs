@@ -1,6 +1,5 @@
 using UnityEngine;
 
-[RequireComponent(typeof(DirectionHandler))]
 public class Chaser : MonoBehaviour
 {
     [SerializeField] private float _chaseDistance = 5f;
@@ -10,6 +9,7 @@ public class Chaser : MonoBehaviour
 
     private Transform _target;
     private DirectionHandler _directionHandler;
+    private Invincibility _playerInvincibility;
 
     private void Start()
     {
@@ -18,30 +18,28 @@ public class Chaser : MonoBehaviour
         if (_player != null)
         {
             _target = _player.transform;
+            _playerInvincibility = _player.GetComponent<Invincibility>();
         }
     }
 
     public bool IsPlayerInSight()
     {
         if (_target == null)
-        {
             return false;
-        }
 
-        Vector2 directionToPlayer = new Vector2(_target.position.x - transform.position.x, 0).normalized;
+        if (_playerInvincibility != null && _playerInvincibility.IsProtected())
+            return false;
+
+        float directionSign = Mathf.Sign(_target.position.x - transform.position.x);
+        Vector2 directionToPlayer = new Vector2(directionSign, 0);
         float sqrDistanceToPlayer = ((Vector2)_target.position - (Vector2)transform.position).sqrMagnitude;
         float sqrChaseDistance = _chaseDistance * _chaseDistance;
 
         if (sqrDistanceToPlayer <= sqrChaseDistance)
         {
-            float dotProduct = Vector2.Dot(transform.right, directionToPlayer);
-
-            if (dotProduct > 0)
-            {
-                RaycastHit2D hit = Physics2D.Raycast(transform.position, directionToPlayer, Mathf.Sqrt(sqrDistanceToPlayer), _playerLayer);
-                Debug.DrawLine(transform.position, transform.position + (Vector3)directionToPlayer * Mathf.Sqrt(sqrDistanceToPlayer), Color.red);
-                return hit.collider != null && hit.collider.GetComponent<Player>();
-            }
+            RaycastHit2D hit = Physics2D.Raycast(transform.position, directionToPlayer, Mathf.Sqrt(sqrDistanceToPlayer), _playerLayer);
+            Debug.DrawLine(transform.position, transform.position + (Vector3)directionToPlayer * Mathf.Sqrt(sqrDistanceToPlayer), Color.red);
+            return hit.collider != null && hit.collider.GetComponent<Player>();
         }
 
         return false;

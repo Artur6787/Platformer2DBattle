@@ -2,12 +2,11 @@ using UnityEngine;
 
 [RequireComponent(typeof(SpriteRenderer))]
 [RequireComponent(typeof(AnimationHandler))]
-[RequireComponent(typeof(InputHandler))]
 public class Attack : MonoBehaviour
 {
     [SerializeField] private GameObject _attackHitbox;
     [SerializeField] private Vector2 _initialLocalPosition;
-    [SerializeField] private float _startTime = 0.1f;
+    [SerializeField] private float _startTime = 0.2f;
     [SerializeField] private Transform _hitPosition;
     [SerializeField] private LayerMask _enemy;
     [SerializeField] private float _hitRange;
@@ -23,8 +22,8 @@ public class Attack : MonoBehaviour
 
     private void Awake()
     {
-        _inputHandler = GetComponent<InputHandler>();
-        _mover = GetComponent<Mover>();
+        _inputHandler = GetComponentInParent<InputHandler>();
+        _mover = GetComponentInParent<Mover>();
     }
 
     private void Start()
@@ -46,9 +45,9 @@ public class Attack : MonoBehaviour
 
     private void LateUpdate()
     {
-        _attackHitbox.transform.localPosition = _spriteRenderer.flipX
-            ? new Vector3(-_initialLocalPosition.x, _initialLocalPosition.y)
-            : _initialLocalPosition;
+        float directionSign = Mathf.Sign(transform.localScale.x);
+        _attackHitbox.transform.localPosition = new Vector3(
+        _initialLocalPosition.x * directionSign, _initialLocalPosition.y, 0);
     }
 
     private void Update()
@@ -88,19 +87,23 @@ public class Attack : MonoBehaviour
 
     private void PerformHit()
     {
-        if (_isHitting == true && _hasHit == false)
+        Debug.Log("PerformHit вызван");
+        Collider2D[] enemies = Physics2D.OverlapCircleAll(_hitPosition.position, _hitRange, _enemy);
+        Debug.Log("Найдено врагов: " + enemies.Length);
+
+        foreach (var enemyCollider in enemies)
         {
-            Collider2D[] enemies = Physics2D.OverlapCircleAll(_hitPosition.position, _hitRange, _enemy);
+            Debug.Log("Пробуем нанести урон: " + enemyCollider.name);
 
-            foreach (var enemyCollider in enemies)
+            if (enemyCollider.TryGetComponent<DamageReceiver>(out var damageReceiver))
             {
-                if (enemyCollider.TryGetComponent(out Health health))
-                {
-                    health.TakeDamage(_damageAmount);
-                }
+                Debug.Log("DamageReceiver найден, наносим урон: " + enemyCollider.name);
+                damageReceiver.TakeDamage(_damageAmount);
             }
-
-            _hasHit = true;
+            else
+            {
+                Debug.Log("DamageReceiver НЕ найден у: " + enemyCollider.name);
+            }
         }
     }
 

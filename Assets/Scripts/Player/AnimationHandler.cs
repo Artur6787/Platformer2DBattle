@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[RequireComponent(typeof(InputHandler))]
+[RequireComponent(typeof(Animator))]
 public class AnimationHandler : MonoBehaviour
 {
     private static readonly int s_isJumpingHash = Animator.StringToHash("isJumping");

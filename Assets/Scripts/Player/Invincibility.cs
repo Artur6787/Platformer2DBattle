@@ -1,26 +1,36 @@
 using System.Collections;
 using UnityEngine;
 
-[RequireComponent(typeof(Renderer))]
 [RequireComponent(typeof(Collider2D))]
 public class Invincibility : MonoBehaviour
 {
     [SerializeField] private float _protectionDuration = 2f;
     [SerializeField] private float _blinkSpeed = 0.2f;
-    
+
     private const string PlayerLayer = "Player";
     private const string EnemyLayer = "Enemy";
 
     private bool _isProtected = false;
     private Renderer _objectRenderer;
     private Collider2D _objectCollider;
-    private WaitForSeconds _blinkWait;   
+    private WaitForSeconds _blinkWait;
     private int _playerLayerIndex;
     private int _enemyLayerIndex;
 
     private void Start()
     {
-        _objectRenderer = GetComponent<Renderer>();
+        _objectRenderer = GetComponentInChildren<Renderer>();
+
+        if (_objectRenderer == null)
+        {
+            Debug.LogError("Renderer не найден! Проверьте, что PlayerSprite является дочерним и содержит SpriteRenderer.");
+            foreach (Transform child in transform)
+            {
+                Debug.Log("Дочерний объект: " + child.name + ", Renderer: " + child.GetComponent<Renderer>());
+            }
+            return;
+        }
+
         _objectCollider = GetComponent<Collider2D>();
         _blinkWait = new WaitForSeconds(_blinkSpeed);
         CacheLayerIndices();
@@ -45,7 +55,7 @@ public class Invincibility : MonoBehaviour
 
     private void SetLayerCollision(bool ignore)
     {
-        Physics2D.IgnoreLayerCollision(_playerLayerIndex,_enemyLayerIndex,ignore);
+        Physics2D.IgnoreLayerCollision(_playerLayerIndex, _enemyLayerIndex, ignore);
     }
 
     public bool IsProtected()

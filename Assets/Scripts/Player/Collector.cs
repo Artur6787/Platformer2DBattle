@@ -1,10 +1,10 @@
 using UnityEngine;
 
-public class CoinCollector : MonoBehaviour
+public class Collector : MonoBehaviour
 {
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.TryGetComponent<CollectibleItem>(out var collectible))
+        if (collision.TryGetComponent<CollectibleItem>(out var collectible))
         {
             collectible.HandleCollected();
         }

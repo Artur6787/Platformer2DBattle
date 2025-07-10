@@ -2,9 +2,8 @@ using System;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
-[RequireComponent(typeof(AnimationHandler))]
 [RequireComponent(typeof(InputHandler))]
-[RequireComponent(typeof(DirectionHandler))]
+[RequireComponent(typeof(GroundDetector))]
 public class Mover : MonoBehaviour
 {
     [SerializeField] private float _speed;
@@ -28,9 +27,9 @@ public class Mover : MonoBehaviour
     private void Awake()
     {
         _rigidbody2d = GetComponent<Rigidbody2D>();
-        _animationHandler = GetComponent<AnimationHandler>();
+        _animationHandler = GetComponentInChildren<AnimationHandler>();
         _inputHandler = GetComponent<InputHandler>();
-        _directionHandler = GetComponent<DirectionHandler>();
+        _directionHandler = GetComponentInChildren<DirectionHandler>();
         _groundDetector = GetComponent<GroundDetector>();
     }
 

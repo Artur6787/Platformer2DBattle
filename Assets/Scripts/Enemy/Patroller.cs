@@ -1,39 +1,32 @@
 using UnityEngine;
 
-[RequireComponent(typeof(DirectionHandler))]
+[RequireComponent(typeof(Collider2D))]
+[RequireComponent(typeof(Rigidbody2D))]
 public class Patroller : MonoBehaviour
 {
-    [SerializeField] private Transform _path;
+    [SerializeField] private Transform[] _points;
     [SerializeField] private float _speed;
+    [SerializeField] private float _pointReachThreshold = 0.1f;
 
-    private Transform[] _points;
     private int _currentPointIndex;
     private DirectionHandler _directionHandler;
 
     private void Start()
     {
         _directionHandler = GetComponent<DirectionHandler>();
-        _points = new Transform[_path.childCount];
-
-        for (int i = 0; i < _path.childCount; i++)
-        {
-            _points[i] = _path.GetChild(i);
-        }
     }
 
     public void MoveAlongPath()
     {
+        if (_directionHandler == null)
+            return;
+
         Transform target = _points[_currentPointIndex];
         transform.position = Vector3.MoveTowards(transform.position, target.position, _speed * Time.deltaTime);
 
-        if (Vector3.Distance(transform.position, target.position) < 0.1f)
+        if ((transform.position - target.position).sqrMagnitude < _pointReachThreshold * _pointReachThreshold)
         {
-            _currentPointIndex++;
-
-            if (_currentPointIndex >= _points.Length)
-            {
-                _currentPointIndex = 0;
-            }
+            _currentPointIndex = (_currentPointIndex + 1) % _points.Length;
         }
 
         _directionHandler.Reflect((target.position - transform.position).normalized);
