@@ -56,6 +56,5 @@ public class Health : MonoBehaviour
             _collider.enabled = false;
 
         Died?.Invoke();
-        Destroy(gameObject, 0.1f);
     }
 }

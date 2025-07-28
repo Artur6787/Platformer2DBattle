@@ -453,6 +453,8 @@ GameObject:
   - component: {fileID: 1873703798044524883}
   - component: {fileID: 9056748332454965810}
   - component: {fileID: 3858080882978750430}
+  - component: {fileID: 6931888639729107205}
+  - component: {fileID: 6386668790704056189}
   m_Layer: 7
   m_Name: EnemyRoot
   m_TagString: Untagged
@@ -579,7 +581,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8
   _speed: 2
-  _player: {fileID: 0}
 --- !u!114 &8193144259284185997
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -634,7 +635,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17a4dc93e436a8c488213eff08e0448f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _spriteRenderer: {fileID: 4090062435682646063}
+--- !u!114 &6931888639729107205
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7048232332704601535}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7a4e2f06a9fa01409977cfbd3717954, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  destroyDelay: 0.1
+--- !u!114 &6386668790704056189
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7048232332704601535}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7a4e2f06a9fa01409977cfbd3717954, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  destroyDelay: 0.1
 --- !u!1 &9107164623218442084
 GameObject:
   m_ObjectHideFlags: 0

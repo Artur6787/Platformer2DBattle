@@ -5,7 +5,6 @@ public class Chaser : MonoBehaviour
     [SerializeField] private float _chaseDistance = 5f;
     [SerializeField] private LayerMask _playerLayer;
     [SerializeField] private float _speed;
-    [SerializeField] private Transform _player;
 
     private Transform _target;
     private DirectionHandler _directionHandler;
@@ -14,6 +13,7 @@ public class Chaser : MonoBehaviour
     private void Start()
     {
         _directionHandler = GetComponent<DirectionHandler>();
+        Player _player = FindObjectOfType<Player>();
 
         if (_player != null)
         {

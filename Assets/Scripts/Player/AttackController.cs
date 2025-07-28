@@ -2,7 +2,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(SpriteRenderer))]
 [RequireComponent(typeof(AnimationHandler))]
-public class Attack : MonoBehaviour
+public class AttackController : MonoBehaviour
 {
     [SerializeField] private GameObject _attackHitbox;
     [SerializeField] private Vector2 _initialLocalPosition;

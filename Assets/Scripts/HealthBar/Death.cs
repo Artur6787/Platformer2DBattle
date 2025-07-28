@@ -3,17 +3,27 @@ using UnityEngine;
 [RequireComponent(typeof(Health))]
 public class Death : MonoBehaviour
 {
-    private Collider2D _collider;
+    [SerializeField] private float destroyDelay = 0.1f;
+
+    private Health _health;
 
     private void Awake()
     {
-        GetComponent<Health>().Died += Die;
-        _collider = GetComponent<Collider2D>();
+        _health = GetComponent<Health>();
     }
 
-    private void Die()
+    private void OnEnable()
     {
-        _collider.enabled = false;
-        Destroy(gameObject, 0.1f);
+        _health.Died += OnDeath;
+    }
+
+    private void OnDisable()
+    {
+        _health.Died -= OnDeath;
+    }
+
+    private void OnDeath()
+    {
+        Destroy(gameObject, destroyDelay);
     }
 }
