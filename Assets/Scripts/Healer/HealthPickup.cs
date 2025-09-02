@@ -4,15 +4,11 @@ public class HealthPickup : CollectibleItem
 {
     [SerializeField] private int _healAmount = 20;
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    public int HealAmount
     {
-        if (collision.TryGetComponent<Player>(out var player))
+        get
         {
-            if (player.TryGetComponent<Health>(out var health))
-            {
-                health.Heal(_healAmount);
-                HandleCollected();
-            }
+            return _healAmount;
         }
     }
 

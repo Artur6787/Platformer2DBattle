@@ -449,12 +449,13 @@ GameObject:
   - component: {fileID: 6217905576771879492}
   - component: {fileID: 292299255758844918}
   - component: {fileID: 8084909535629362659}
+  - component: {fileID: 6389787043916396976}
   - component: {fileID: 8193144259284185997}
   - component: {fileID: 1873703798044524883}
   - component: {fileID: 9056748332454965810}
   - component: {fileID: 3858080882978750430}
   - component: {fileID: 6931888639729107205}
-  - component: {fileID: 6386668790704056189}
+  - component: {fileID: 2073039452925791963}
   m_Layer: 7
   m_Name: EnemyRoot
   m_TagString: Untagged
@@ -576,11 +577,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 610dc37e599aa704f8db26aee0003cce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _chaseDistance: 5
-  _playerLayer:
-    serializedVersion: 2
-    m_Bits: 8
-  _speed: 2
+--- !u!114 &6389787043916396976
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7048232332704601535}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d724bc7d86faf949bde9388e2ad7eef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 5
 --- !u!114 &8193144259284185997
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -593,11 +602,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4dd920ec5657aca41b5f55fb34357f1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _points:
-  - {fileID: 4076944763900878744}
-  - {fileID: 728078520704882118}
-  _speed: 2
-  _pointReachThreshold: 2
+  points: []
+  pointReachThreshold: 0.1
 --- !u!114 &1873703798044524883
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -648,7 +654,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   destroyDelay: 0.1
---- !u!114 &6386668790704056189
+--- !u!114 &2073039452925791963
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -657,10 +663,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 7048232332704601535}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f7a4e2f06a9fa01409977cfbd3717954, type: 3}
+  m_Script: {fileID: 11500000, guid: 6921d472cd57c4b40b3a1b2646f27dec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  destroyDelay: 0.1
+  visionDistance: 5
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!1 &9107164623218442084
 GameObject:
   m_ObjectHideFlags: 0

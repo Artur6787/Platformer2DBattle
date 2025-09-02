@@ -1,34 +1,38 @@
 using UnityEngine;
 
-[RequireComponent(typeof(Collider2D))]
-[RequireComponent(typeof(Rigidbody2D))]
 public class Patroller : MonoBehaviour
 {
     [SerializeField] private Transform[] _points;
-    [SerializeField] private float _speed;
     [SerializeField] private float _pointReachThreshold = 0.1f;
 
-    private int _currentPointIndex;
-    private DirectionHandler _directionHandler;
+    private const int NextPointStep = 1;
 
-    private void Start()
+    private int _currentPointIndex = 0;
+    private float _pointReachThresholdSqr;
+
+    private void Awake()
     {
-        _directionHandler = GetComponent<DirectionHandler>();
+        _pointReachThresholdSqr = _pointReachThreshold * _pointReachThreshold;
     }
 
-    public void MoveAlongPath()
+    public Vector2 GetNextTargetPosition()
     {
-        if (_directionHandler == null)
-            return;
+        if (_points == null || _points.Length == 0)
+            return transform.position;
 
-        Transform target = _points[_currentPointIndex];
-        transform.position = Vector3.MoveTowards(transform.position, target.position, _speed * Time.deltaTime);
+        Transform targetPoint = _points[_currentPointIndex];
+        float sqrDistance = ((Vector2)transform.position - (Vector2)targetPoint.position).sqrMagnitude;
 
-        if ((transform.position - target.position).sqrMagnitude < _pointReachThreshold * _pointReachThreshold)
+        if (sqrDistance < _pointReachThresholdSqr)
         {
-            _currentPointIndex = (_currentPointIndex + 1) % _points.Length;
+            _currentPointIndex += NextPointStep;
+
+            if (_currentPointIndex >= _points.Length)
+                _currentPointIndex -= _points.Length;
+
+            targetPoint = _points[_currentPointIndex];
         }
 
-        _directionHandler.Reflect((target.position - transform.position).normalized);
+        return targetPoint.position;
     }
 }

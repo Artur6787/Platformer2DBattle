@@ -6,7 +6,24 @@ public class Collector : MonoBehaviour
     {
         if (collision.TryGetComponent<CollectibleItem>(out var collectible))
         {
-            collectible.HandleCollected();
+            switch (collectible)
+            {
+                case HealthPickup healthPickup:
+                    if (TryGetComponent<Health>(out var health))
+                    {
+                        health.Heal(healthPickup.HealAmount);
+                        healthPickup.HandleCollected();
+                    }
+                    break;
+
+                case Coin coin:
+                    coin.HandleCollected();
+                    break;
+
+                default:
+                    collectible.HandleCollected();
+                    break;
+            }
         }
     }
 }
